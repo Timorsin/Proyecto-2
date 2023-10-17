@@ -77,7 +77,7 @@ public class ArbolBinarioExp {
         String cadena = "";
         switch(a){
             case 0 -> cadena = preorden(raiz,cadena);
-            case 1 -> cadena = preorden(raiz,cadena);
+            case 1 -> cadena = inorden(raiz,cadena);
             case 2 -> cadena = posorden(raiz,cadena);
        
         }
@@ -158,7 +158,23 @@ public class ArbolBinarioExp {
     public double EvaluaExpresion(){
         return evalua(raiz);
     }
+  /*  
+    public static String decimalToBinary(int decimalNumber) {
+    if (decimalNumber == 0) {
+        return "0";
+    }
 
+    StringBuilder binary = new StringBuilder();
+
+    while (decimalNumber > 0) {
+        int remainder = decimalNumber % 2;
+        binary.insert(0, remainder); // Agrega el residuo al principio de la cadena
+        decimalNumber = decimalNumber / 2;
+    }
+
+    return binary.toString();
+}
+*/
     private double evalua(NodoArbol subArbol){
         double acum = 0;
         if(!esOperador(subArbol.dato.toString().charAt(0))){
@@ -169,7 +185,8 @@ public class ArbolBinarioExp {
                 case '*' -> acum = acum + evalua(subArbol.izquierdo)* evalua(subArbol.derecho);
                 case '/' -> acum = acum + evalua(subArbol.izquierdo) / evalua(subArbol.derecho);
                 case '+' -> acum = acum + evalua(subArbol.izquierdo) + evalua(subArbol.derecho);
-                case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);
+                case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);   
+        
             }   
             return acum;
         }

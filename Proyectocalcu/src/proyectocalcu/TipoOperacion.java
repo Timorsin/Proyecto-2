@@ -8,15 +8,6 @@ package proyectocalcu;
  *
  * @author maxhp
  */
-public class NodoArbol {
-    Object dato;
-    NodoArbol izquierdo;
-    NodoArbol derecho;
+public class TipoOperacion {
     
-    public NodoArbol(Object x){
-        dato = x;
-        izquierdo = null;
-        derecho = null;
-    
-    }
 }

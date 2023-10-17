@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package proyectocalcu;
 
-/**
- *
- * @author maxhp
- */
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+
 public class PaginaPrincipal extends javax.swing.JFrame {
 
     /**
@@ -31,15 +28,6 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         Limpiar = new javax.swing.JButton();
         Salir = new javax.swing.JButton();
         Resultado = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        Fuck = new javax.swing.JLabel();
-        fuck2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        MostrarPreorden = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        MostrarPosorden = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        MostrarInorden = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,25 +60,6 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         Resultado.setToolTipText("");
 
-        jLabel2.setText("preOrden");
-
-        Fuck.setText("Inorden");
-
-        fuck2.setText("Posorden");
-        fuck2.setToolTipText("");
-
-        MostrarPreorden.setColumns(20);
-        MostrarPreorden.setRows(5);
-        jScrollPane1.setViewportView(MostrarPreorden);
-
-        MostrarPosorden.setColumns(20);
-        MostrarPosorden.setRows(5);
-        jScrollPane2.setViewportView(MostrarPosorden);
-
-        MostrarInorden.setColumns(20);
-        MostrarInorden.setRows(5);
-        jScrollPane3.setViewportView(MostrarInorden);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,79 +67,67 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(Resultado))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(96, 96, 96)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Salir)
-                            .addComponent(Limpiar)
-                            .addComponent(Calcular)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(Resultado)))
-                .addGap(109, 109, 109)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(78, 78, 78)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(114, 114, 114)
-                .addComponent(jLabel2)
-                .addGap(271, 271, 271)
-                .addComponent(Fuck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(fuck2)
-                .addGap(105, 105, 105))
+                            .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(Salir)))))
+                .addGap(21, 35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(Fuck))
-                            .addComponent(fuck2, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Calcular)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Limpiar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Resultado)
-                        .addGap(86, 86, 86)
-                        .addComponent(Salir)
-                        .addGap(15, 15, 15))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                .addGap(60, 60, 60)
+                .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Limpiar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addComponent(Resultado)
+                .addGap(87, 87, 87)
+                .addComponent(Salir)
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CalcularActionPerformed
+        
         String cadena = ecuacion.getText();
-        ArbolBinarioExp ABE = new ArbolBinarioExp(cadena);
-        if(evt.getSource()==Calcular){
-            MostrarPreorden.setText(ABE.toString(0));
-            MostrarInorden.setText(ABE.toString(0));
-            MostrarPosorden.setText(ABE.toString(0));
-            Resultado.setText("" + ABE.EvaluaExpresion());
-        }    
+   
+        //Resultado.setText("" + ABE.EvaluaExpresion());
+        
+        try{
+            
+            Socket socket = new Socket("192.168.6.161", 5000 );
+            DataOutputStream envio = new DataOutputStream(socket.getOutputStream());
+            envio.writeUTF(cadena);
+            
+            DataInputStream result = new DataInputStream(socket.getInputStream());
+            String defres = result.readUTF();
+            
+            Resultado.setText(defres);
+            socket.close();
+                    
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
+        
+        
+        
     }//GEN-LAST:event_CalcularActionPerformed
 
     private void ecuacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecuacionActionPerformed
@@ -178,9 +135,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_ecuacionActionPerformed
 
     private void LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiarActionPerformed
-        MostrarPreorden.setText("");
-        MostrarInorden.setText("");
-        MostrarPosorden.setText("");
+
         Resultado.setText("");
     }//GEN-LAST:event_LimpiarActionPerformed
 
@@ -225,18 +180,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Calcular;
-    private javax.swing.JLabel Fuck;
     private javax.swing.JButton Limpiar;
-    private javax.swing.JTextArea MostrarInorden;
-    private javax.swing.JTextArea MostrarPosorden;
-    private javax.swing.JTextArea MostrarPreorden;
     private javax.swing.JLabel Resultado;
     private javax.swing.JButton Salir;
     private javax.swing.JTextField ecuacion;
-    private javax.swing.JLabel fuck2;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }
