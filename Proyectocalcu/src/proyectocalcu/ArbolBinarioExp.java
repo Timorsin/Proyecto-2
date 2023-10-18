@@ -89,7 +89,7 @@ public class ArbolBinarioExp {
         int p = 100;
         p = switch(c){
             case '^' -> 30;
-            case'*','/' -> 20;
+            case'*','/','%' -> 20;
             case '+','-' -> 10;
             default -> 0;
         };
@@ -99,7 +99,7 @@ public class ArbolBinarioExp {
     private boolean esOperador(char c){
         boolean resultado;
         resultado = switch(c){
-            case '(',')','^','*','/','+','-' -> true;
+            case '(',')','^','*','/','+','-','%' -> true;
             default -> false;
         };
         return resultado;
@@ -184,6 +184,7 @@ public class ArbolBinarioExp {
                 case '^' -> acum = acum + Math.pow(evalua(subArbol.izquierdo),evalua(subArbol.derecho));
                 case '*' -> acum = acum + evalua(subArbol.izquierdo)* evalua(subArbol.derecho);
                 case '/' -> acum = acum + evalua(subArbol.izquierdo) / evalua(subArbol.derecho);
+                case '%' -> acum = acum + evalua(subArbol.izquierdo) % evalua(subArbol.derecho);
                 case '+' -> acum = acum + evalua(subArbol.izquierdo) + evalua(subArbol.derecho);
                 case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);   
         

@@ -111,7 +111,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         
         try{
             
-            Socket socket = new Socket("192.168.6.161", 5000 );
+            Socket socket = new Socket("127.0.0.1", 5000 );
             DataOutputStream envio = new DataOutputStream(socket.getOutputStream());
             envio.writeUTF(cadena);
             
@@ -119,7 +119,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             String defres = result.readUTF();
             
             Resultado.setText(defres);
-            socket.close();
+            //socket.close();
                     
         }catch(Exception e){
             System.out.println(e);
