@@ -28,6 +28,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         Limpiar = new javax.swing.JButton();
         Salir = new javax.swing.JButton();
         Resultado = new javax.swing.JLabel();
+        abrircamara = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,29 +61,37 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         Resultado.setToolTipText("");
 
+        abrircamara.setText("Camara");
+        abrircamara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrircamaraActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(Resultado))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(Salir)))))
-                .addGap(21, 35, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(46, 46, 46)
+                            .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(23, 23, 23)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(Salir)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(73, 73, 73)
+                                    .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(215, 215, 215)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(abrircamara)
+                                .addComponent(Resultado)))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +105,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(Resultado)
                 .addGap(87, 87, 87)
-                .addComponent(Salir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Salir)
+                    .addComponent(abrircamara))
                 .addGap(14, 14, 14))
         );
 
@@ -143,6 +154,17 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         System.exit(WIDTH);
     }//GEN-LAST:event_SalirActionPerformed
 
+    private void abrircamaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrircamaraActionPerformed
+        OpenCVcode camera = new OpenCVcode();  // Create an instance of OpenCVcode
+        Thread cameraThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            camera.StartCamera();  // Start the camera in a new thread
+        }
+        });
+        cameraThread.start();
+    }//GEN-LAST:event_abrircamaraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -183,6 +205,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton Limpiar;
     private javax.swing.JLabel Resultado;
     private javax.swing.JButton Salir;
+    private javax.swing.JButton abrircamara;
     private javax.swing.JTextField ecuacion;
     // End of variables declaration//GEN-END:variables
 }
