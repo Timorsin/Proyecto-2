@@ -3,13 +3,17 @@ package proyectocalcu;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PaginaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaPrincipal
-     */
+    private String _ej;
+    private String _res;
+    private String _fecha;
+    
     public PaginaPrincipal() {
         initComponents();
     }
@@ -123,11 +127,15 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         try{
             
             Socket socket = new Socket("127.0.0.1", 5000 );
+            Socket socket2 = new Socket("127.0.0.1", 6000 );
             DataOutputStream envio = new DataOutputStream(socket.getOutputStream());
             envio.writeUTF(cadena);
             
             DataInputStream result = new DataInputStream(socket.getInputStream());
             String defres = result.readUTF();
+            
+            DataInputStream result2 = new DataInputStream(socket2.getInputStream());
+            String defres2 = result2.readUTF();
             
             Resultado.setText(defres);
             //socket.close();
@@ -168,31 +176,12 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+    public static void main(String args[]) throws FileNotFoundException{
+        
+        File csvFile = new File("Registro.csv");
+        PrintWriter out = new PrintWriter(csvFile);
+        
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PaginaPrincipal().setVisible(true);

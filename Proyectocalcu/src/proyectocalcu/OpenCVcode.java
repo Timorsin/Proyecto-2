@@ -8,19 +8,15 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -91,11 +87,9 @@ public class OpenCVcode extends JFrame {
             pantalla.setIcon(icon);
             
             if(clicked){
-                String name = JOptionPane.showInputDialog(this, "Introduzca el nombre de la imagen");
-                if(name==null){
-                    name = new SimpleDateFormat("yyyy-mm-dd-hh-mm-ss").format(new Date());
-                }
-                Imgcodecs.imwrite("images/" + name + ".jpg",image);
+                //String name = JOptionPane.showInputDialog(this, "Introduzca el nombre de la imagen");
+       
+                Imgcodecs.imwrite("images/" + "Ecuacion.jpg",image);
                 
                 clicked = false;
             }
@@ -107,24 +101,21 @@ public class OpenCVcode extends JFrame {
         System.setProperty("java.library.path", "C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\opencv-4.8,0");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         
-        /*Tesseract tesseract = new Tesseract();
         try{
-            //Socket tusocket = new Socket("127.0.0.1",5000);
+            byte[] imageData = Files.readAllBytes(Paths.get("Ecuacion.jpg"));
+            Socket tusocket = new Socket("127.0.0.1",6000);
+            OutputStream imagenEc = tusocket.getOutputStream();
             
-            //tesseract.setDatapath("C:\\Users\\maxhp\\Downloads\\Tess4J-3.4.8-src\\Tess4J");
-            //String text = tesseract.doOCR(new File("C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\Proyectocalcu\\images\\1.jpg"));
+            imagenEc.write(imageData);
             
-           // DataOutputStream textoimagen = new DataOutputStream(tusocket.getOutputStream());
-           // textoimagen.writeUTF(text);
+            imagenEc.flush();
             
+            imagenEc.close();
+            tusocket.close();
             
-        }catch(TesseractException e){
-            System.out.println(e.toString());
+        }catch(IOException e){
+            System.out.println(e);
         }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-        */
         EventQueue.invokeLater(new Runnable() {
             
             @Override

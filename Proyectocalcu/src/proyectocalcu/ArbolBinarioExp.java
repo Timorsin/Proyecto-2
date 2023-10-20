@@ -90,7 +90,7 @@ public class ArbolBinarioExp {
         p = switch(c){
             case '^' -> 30;
             case'*','/','%' -> 20;
-            case '+','-' -> 10;
+            case '+','-','&','|','~'-> 10;
             default -> 0;
         };
         return p;
@@ -99,7 +99,7 @@ public class ArbolBinarioExp {
     private boolean esOperador(char c){
         boolean resultado;
         resultado = switch(c){
-            case '(',')','^','*','/','+','-','%' -> true;
+            case '(',')','^','*','/','+','-','%','&','|','~' -> true;
             default -> false;
         };
         return resultado;
@@ -181,12 +181,17 @@ public class ArbolBinarioExp {
             return Double.parseDouble(subArbol.dato.toString());
         }else{
             switch(subArbol.dato.toString().charAt(0)){
-                case '^' -> acum = acum + Math.pow(evalua(subArbol.izquierdo),evalua(subArbol.derecho));
+                case 'p' -> acum = acum + Math.pow(evalua(subArbol.izquierdo),evalua(subArbol.derecho));
                 case '*' -> acum = acum + evalua(subArbol.izquierdo)* evalua(subArbol.derecho);
                 case '/' -> acum = acum + evalua(subArbol.izquierdo) / evalua(subArbol.derecho);
                 case '%' -> acum = acum + evalua(subArbol.izquierdo) % evalua(subArbol.derecho);
                 case '+' -> acum = acum + evalua(subArbol.izquierdo) + evalua(subArbol.derecho);
-                case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);   
+                case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);
+                case '&'-> acum = (int)evalua(subArbol.izquierdo) & (int)evalua(subArbol.derecho);
+                case '|'-> acum = (int)evalua(subArbol.izquierdo) | (int)evalua(subArbol.derecho);
+                case '^'-> acum = (int)evalua(subArbol.izquierdo) ^ (int)evalua(subArbol.derecho);
+                case '~'-> acum = ~(int)evalua(subArbol.izquierdo);
+                
         
             }   
             return acum;
