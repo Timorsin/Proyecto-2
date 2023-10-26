@@ -11,10 +11,6 @@ import org.opencv.videoio.VideoCapture;
 
 public class PaginaPrincipal extends javax.swing.JFrame {
 
-    private String _ej;
-    private String _res;
-    private String _fecha;
-    
     public PaginaPrincipal() {
         initComponents();
     }
@@ -91,9 +87,6 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                         .addGap(215, 215, 215)
                         .addComponent(Resultado))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -104,10 +97,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                                         .addGap(137, 137, 137)
                                         .addComponent(Registro))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(abrircamara))))))))
+                                        .addGap(36, 36, 36)
+                                        .addComponent(abrircamara))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -136,23 +133,17 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         
         String cadena = ecuacion.getText();
    
-        //Resultado.setText("" + ABE.EvaluaExpresion());
-        
         try{
             
             Socket socket = new Socket("127.0.0.1", 5000 );
-            //Socket socket2 = new Socket("127.0.0.1", 6000 );
+
             DataOutputStream envio = new DataOutputStream(socket.getOutputStream());
             envio.writeUTF(cadena);
             
             DataInputStream result = new DataInputStream(socket.getInputStream());
             String defres = result.readUTF();
             
-           // DataInputStream result2 = new DataInputStream(socket2.getInputStream());
-           // String defres2 = result2.readUTF();
-            
             Resultado.setText(defres);
-            //socket.close();
                     
         }catch(Exception e){
             System.out.println(e);
@@ -167,17 +158,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             System.out.println(e);
         }
         
-        
-        
-        
     }//GEN-LAST:event_CalcularActionPerformed
 
     private void ecuacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ecuacionActionPerformed
-        // TODO add your handling code here:
+   
     }//GEN-LAST:event_ecuacionActionPerformed
 
     private void LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiarActionPerformed
-
         Resultado.setText("");
     }//GEN-LAST:event_LimpiarActionPerformed
 
@@ -190,7 +177,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         Thread cameraThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            VideoCapture capture = new VideoCapture();
+            //VideoCapture capture = new VideoCapture();
             
             camera.StartCamera();  // Start the camera in a new thread
         }
@@ -199,7 +186,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_abrircamaraActionPerformed
 
     private void RegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroActionPerformed
-        // TODO add your handling code here:
+        
+        Registropanel registroPanel = new Registropanel();  // Crea una instancia de la clase Registropanel
+        registroPanel.setVisible(true);
+        
+        
     }//GEN-LAST:event_RegistroActionPerformed
 
     /**

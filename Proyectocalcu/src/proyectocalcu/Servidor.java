@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package proyectocalcu;
 
 import java.io.ByteArrayOutputStream;
@@ -21,15 +18,8 @@ import java.util.Date;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
-/**
- *
- * @author maxhp
- */
 public class Servidor extends javax.swing.JFrame implements Runnable {
-
-    /**
-     * Creates new form Servidor
-     */
+    
     public Servidor() {
         initComponents();
         Thread hilo = new Thread(this);
@@ -126,11 +116,10 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 Date fecha = new Date();
                 SimpleDateFormat dateform = new SimpleDateFormat("MM/dd/YY");
                 
-                //File csvFile = new File("Registro.csv");
-                FileWriter out = new FileWriter("Registro.csv");
+                FileWriter out = new FileWriter("Registro.csv", true);
                 out.append( "\nOperacion: " + cadena + " Resultado: " + ABE.EvaluaExpresion()+ " Fecha: " + dateform.format(fecha));
                 out.close();
-                //servidor.close();
+                
             }
             
         }catch(Exception e){
@@ -157,11 +146,12 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 buffer.flush();
                 byte[] imageData = buffer.toByteArray();
                 
-                FileOutputStream outputStream = new FileOutputStream("Ecuacion.jpg");
+                FileOutputStream outputStream = new FileOutputStream("imagenServer/" + "EcuacionRecibida.jpg");
                 outputStream.write(imageData);
       
+                
                 tesseract.setDatapath("C:\\Users\\maxhp\\Downloads\\Tess4J-3.4.8-src\\Tess4J");
-                String text = tesseract.doOCR(new File("Ecuacion.jpg"));
+                String text = tesseract.doOCR(new File("EcuacionRecibida.jpg"));
                 
                 System.out.println(text);
                 
@@ -169,11 +159,11 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 
                 DataOutputStream respaquete2 = new DataOutputStream(tusocket.getOutputStream());
                 respaquete2.writeUTF("" + ABE.EvaluaExpresion());
+
             }
         }catch(TesseractException e){
             System.out.println(e.toString());
-        }
-        catch(IOException e){
+        }catch(IOException e){
             e.printStackTrace();
         }
 

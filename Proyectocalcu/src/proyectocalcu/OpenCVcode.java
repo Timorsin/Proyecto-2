@@ -12,9 +12,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -91,34 +93,34 @@ public class OpenCVcode extends JFrame {
             
             if(clicked){
                 String name = JOptionPane.showInputDialog(this, "Presione Ok");
-             
-                clicked = false;
                 
-                EnviarServer(image);
+                Imgcodecs.imwrite("images/" + "Ecuacion.jpg" , image);
+                
+                try{
+                    
+                    byte[] Data  = Files.readAllBytes(Paths.get("images\\Ecuacion.jpg"));
+                    
+                    Socket tusocket = new Socket("127.0.0.1", 6000); 
+                    
+                    OutputStream outputStream = tusocket.getOutputStream();
+                    
+                    outputStream.write(Data);
+                    
+                    outputStream.flush();
+                   
+                }catch(IOException ev){
+                    ev.printStackTrace();
+                }
+                
+                
+                clicked = false;
             }
         }
     }
-    
-    public void Enviarserver(Mat image){
-        
-        try{
-            
-        Socket tusocket = new Socket("127.0.0.1",5000);
-        DataOutputStream imagenenvio = new DataOutputStream(tusocket.getOutputStream()); 
-        
-        imagenenvio.writeBytes();
-        
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        
-        
-    }
-    
-    
+      
     public static void main(String [] args){
         
-        //System.setProperty("java.library.path", "C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\opencv-4.8,0");
+        System.setProperty("java.library.path", "C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\opencv-4.8,0");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         
         EventQueue.invokeLater(new Runnable() {
