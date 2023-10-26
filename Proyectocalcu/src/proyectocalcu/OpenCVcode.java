@@ -2,21 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package proyectocalcu;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -87,35 +90,37 @@ public class OpenCVcode extends JFrame {
             pantalla.setIcon(icon);
             
             if(clicked){
-                //String name = JOptionPane.showInputDialog(this, "Introduzca el nombre de la imagen");
-       
-                Imgcodecs.imwrite("images/" + "Ecuacion.jpg",image);
-                
+                String name = JOptionPane.showInputDialog(this, "Presione Ok");
+             
                 clicked = false;
+                
+                EnviarServer(image);
             }
         }
     }
     
-    public static void main(String [] args){
-        
-        System.setProperty("java.library.path", "C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\opencv-4.8,0");
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    public void Enviarserver(Mat image){
         
         try{
-            byte[] imageData = Files.readAllBytes(Paths.get("Ecuacion.jpg"));
-            Socket tusocket = new Socket("127.0.0.1",6000);
-            OutputStream imagenEc = tusocket.getOutputStream();
             
-            imagenEc.write(imageData);
-            
-            imagenEc.flush();
-            
-            imagenEc.close();
-            tusocket.close();
-            
+        Socket tusocket = new Socket("127.0.0.1",5000);
+        DataOutputStream imagenenvio = new DataOutputStream(tusocket.getOutputStream()); 
+        
+        imagenenvio.writeBytes();
+        
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
         }
+        
+        
+    }
+    
+    
+    public static void main(String [] args){
+        
+        //System.setProperty("java.library.path", "C:\\Users\\maxhp\\OneDrive\\Documentos\\NetBeansProjects\\opencv-4.8,0");
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        
         EventQueue.invokeLater(new Runnable() {
             
             @Override

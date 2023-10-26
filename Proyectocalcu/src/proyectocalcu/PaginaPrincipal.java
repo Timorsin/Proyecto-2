@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import org.opencv.videoio.VideoCapture;
 
 public class PaginaPrincipal extends javax.swing.JFrame {
 
@@ -33,6 +34,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         Salir = new javax.swing.JButton();
         Resultado = new javax.swing.JLabel();
         abrircamara = new javax.swing.JButton();
+        Registro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,47 +74,59 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        Registro.setText("Registro");
+        Registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(46, 46, 46)
-                            .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(23, 23, 23)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(Resultado))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(Salir)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(73, 73, 73)
-                                    .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(215, 215, 215)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(abrircamara)
-                                .addComponent(Resultado)))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(137, 137, 137)
+                                        .addComponent(Registro))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(Limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(abrircamara))))))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(ecuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Limpiar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                 .addComponent(Resultado)
-                .addGap(87, 87, 87)
+                .addGap(83, 83, 83)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Salir)
-                    .addComponent(abrircamara))
-                .addGap(14, 14, 14))
+                    .addComponent(abrircamara)
+                    .addComponent(Registro)
+                    .addComponent(Salir))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -127,19 +141,28 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         try{
             
             Socket socket = new Socket("127.0.0.1", 5000 );
-            Socket socket2 = new Socket("127.0.0.1", 6000 );
+            //Socket socket2 = new Socket("127.0.0.1", 6000 );
             DataOutputStream envio = new DataOutputStream(socket.getOutputStream());
             envio.writeUTF(cadena);
             
             DataInputStream result = new DataInputStream(socket.getInputStream());
             String defres = result.readUTF();
             
-            DataInputStream result2 = new DataInputStream(socket2.getInputStream());
-            String defres2 = result2.readUTF();
+           // DataInputStream result2 = new DataInputStream(socket2.getInputStream());
+           // String defres2 = result2.readUTF();
             
             Resultado.setText(defres);
             //socket.close();
                     
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        try{
+            Socket socket2 = new Socket("127.0.0.1", 6000 );
+            
+            DataInputStream result2 = new DataInputStream(socket2.getInputStream());
+            String defres2 = result2.readUTF();
+            
         }catch(Exception e){
             System.out.println(e);
         }
@@ -167,19 +190,25 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         Thread cameraThread = new Thread(new Runnable() {
         @Override
         public void run() {
+            VideoCapture capture = new VideoCapture();
+            
             camera.StartCamera();  // Start the camera in a new thread
         }
         });
         cameraThread.start();
     }//GEN-LAST:event_abrircamaraActionPerformed
 
+    private void RegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistroActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) throws FileNotFoundException{
         
-        File csvFile = new File("Registro.csv");
-        PrintWriter out = new PrintWriter(csvFile);
+        //File csvFile = new File("Registro.csv");
+        //PrintWriter out = new PrintWriter(csvFile);
         
         
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -192,6 +221,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Calcular;
     private javax.swing.JButton Limpiar;
+    private javax.swing.JButton Registro;
     private javax.swing.JLabel Resultado;
     private javax.swing.JButton Salir;
     private javax.swing.JButton abrircamara;

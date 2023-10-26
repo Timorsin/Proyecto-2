@@ -8,12 +8,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
@@ -59,7 +63,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws FileNotFoundException{
         
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -85,12 +89,20 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 new Servidor().setVisible(true);
             }
         });
+        
+        File csvFile = new File("Registro.csv");
+        PrintWriter out = new PrintWriter(csvFile);
+        
+        
     }
-
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea area;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    
+    
+    
     @Override
     public void run(){
        
@@ -111,6 +123,13 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 DataOutputStream respaquete = new DataOutputStream(misocket.getOutputStream());
                 respaquete.writeUTF("" + ABE.EvaluaExpresion());
                 
+                Date fecha = new Date();
+                SimpleDateFormat dateform = new SimpleDateFormat("MM/dd/YY");
+                
+                //File csvFile = new File("Registro.csv");
+                FileWriter out = new FileWriter("Registro.csv");
+                out.append( "\nOperacion: " + cadena + " Resultado: " + ABE.EvaluaExpresion()+ " Fecha: " + dateform.format(fecha));
+                out.close();
                 //servidor.close();
             }
             
@@ -143,6 +162,8 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
       
                 tesseract.setDatapath("C:\\Users\\maxhp\\Downloads\\Tess4J-3.4.8-src\\Tess4J");
                 String text = tesseract.doOCR(new File("Ecuacion.jpg"));
+                
+                System.out.println(text);
                 
                 ArbolBinarioExp ABE = new ArbolBinarioExp(text);
                 

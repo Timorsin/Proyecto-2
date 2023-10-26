@@ -84,7 +84,6 @@ public class ArbolBinarioExp {
         return cadena;
     }
     
- 
     private int prioridad(char c){
         int p = 100;
         p = switch(c){
@@ -95,7 +94,7 @@ public class ArbolBinarioExp {
         };
         return p;
     }
-
+    
     private boolean esOperador(char c){
         boolean resultado;
         resultado = switch(c){
@@ -103,98 +102,111 @@ public class ArbolBinarioExp {
             default -> false;
         };
         return resultado;
-
     }
-
+    
+    private int prioridad(String op) {
+        return switch(op) {
+            case "**" -> 50;  // Potencia tiene la prioridad más alta
+            default -> prioridad(op.charAt(0));  // Para otros casos, usa la versión char
+        };
+    }
+    
+    private boolean esOperador(String op) {
+        return switch(op) {
+            case "**" -> true;
+            default -> esOperador(op.charAt(0));
+        };
+    }
+    
     private NodoArbol creaArbolBE(String cadena) {
-    PilaArbolExp PilaOperadores = new PilaArbolExp();
-    PilaArbolExp PilaExpresiones = new PilaArbolExp();
+        PilaArbolExp PilaOperadores = new PilaArbolExp();
+        PilaArbolExp PilaExpresiones = new PilaArbolExp();
 
-    for (int i = 0; i < cadena.length(); i++) {
-        char caracterEvaluado = cadena.charAt(i);
-        if (caracterEvaluado == '(') {
-            PilaOperadores.insertar(new NodoArbol(caracterEvaluado));
-        } else if (caracterEvaluado == ')') {
-            // Desapilar y construir subárbol hasta encontrar un '('
-            while (!PilaOperadores.pilaVacia() && PilaOperadores.topePila().dato.toString().charAt(0) != '(') {
-                NodoArbol operador = PilaOperadores.quitar();
-                NodoArbol dato2 = PilaExpresiones.quitar();
-                NodoArbol dato1 = PilaExpresiones.quitar();
-                NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
-                PilaExpresiones.insertar(subArbol);
+        int i = 0;
+        while (i < cadena.length()) {
+            char caracterEvaluado = cadena.charAt(i);
+
+            if (caracterEvaluado == '(') {
+                PilaOperadores.insertar(new NodoArbol(caracterEvaluado));
+                i++;
+            } else if (caracterEvaluado == ')') {
+                while (!PilaOperadores.pilaVacia() && PilaOperadores.topePila().dato.toString().charAt(0) != '(') {
+                    NodoArbol operador = PilaOperadores.quitar();
+                    NodoArbol dato2 = PilaExpresiones.quitar();
+                    NodoArbol dato1 = PilaExpresiones.quitar();
+                    NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
+                    PilaExpresiones.insertar(subArbol);
+                }
+                PilaOperadores.quitar();
+                i++;
+            } else if (Character.isDigit(caracterEvaluado) || (caracterEvaluado == '.' && i < cadena.length() - 1 && Character.isDigit(cadena.charAt(i+1)))) {
+                StringBuilder numberBuilder = new StringBuilder();
+                while (i < cadena.length() && (Character.isDigit(cadena.charAt(i)) || cadena.charAt(i) == '.')) {
+                    numberBuilder.append(cadena.charAt(i));
+                    i++;
+                }
+                PilaExpresiones.insertar(new NodoArbol(numberBuilder.toString()));
+            } else if (esOperador(String.valueOf(caracterEvaluado))) {
+                String operadorActual = String.valueOf(caracterEvaluado);
+
+                if (caracterEvaluado == '*' && i < cadena.length() - 1 && cadena.charAt(i + 1) == '*') {
+                    operadorActual = "**";
+                    i++;  // Aumentamos el índice adicionalmente para manejar ambos asteriscos
+                }
+
+                while (!PilaOperadores.pilaVacia() && prioridad(operadorActual) <= prioridad(PilaOperadores.topePila().dato.toString())) {
+                    NodoArbol operador = PilaOperadores.quitar();
+                    NodoArbol dato2 = PilaExpresiones.quitar();
+                    NodoArbol dato1 = PilaExpresiones.quitar();
+                    NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
+                    PilaExpresiones.insertar(subArbol);
+                }
+
+                PilaOperadores.insertar(new NodoArbol(operadorActual));
+                i++;
+            } else {
+                i++;
             }
-            // Desapilar el '('
-            PilaOperadores.quitar();
-        } else if (!esOperador(caracterEvaluado)) {
-            PilaExpresiones.insertar(new NodoArbol(caracterEvaluado));
-        } else {
-            // Operadores como +, -, *, /, ^
-            while (!PilaOperadores.pilaVacia() && prioridad(caracterEvaluado) <= prioridad(PilaOperadores.topePila().dato.toString().charAt(0))) {
-                NodoArbol operador = PilaOperadores.quitar();
-                NodoArbol dato2 = PilaExpresiones.quitar();
-                NodoArbol dato1 = PilaExpresiones.quitar();
-                NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
-                PilaExpresiones.insertar(subArbol);
-            }
-            PilaOperadores.insertar(new NodoArbol(caracterEvaluado));
         }
+
+        while (!PilaOperadores.pilaVacia()) {
+            NodoArbol operador = PilaOperadores.quitar();
+            NodoArbol dato2 = PilaExpresiones.quitar();
+            NodoArbol dato1 = PilaExpresiones.quitar();
+            NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
+            PilaExpresiones.insertar(subArbol);
+        }
+
+        NodoArbol resultado = PilaExpresiones.quitar();
+        return resultado;
     }
 
-    // Desapilar cualquier operador restante
-    while (!PilaOperadores.pilaVacia()) {
-        NodoArbol operador = PilaOperadores.quitar();
-        NodoArbol dato2 = PilaExpresiones.quitar();
-        NodoArbol dato1 = PilaExpresiones.quitar();
-        NodoArbol subArbol = creaSubArbol(dato2, dato1, operador);
-        PilaExpresiones.insertar(subArbol);
-    }
-
-    // El resultado final es el único elemento en PilaExpresiones
-    NodoArbol resultado = PilaExpresiones.quitar();
-    return resultado;
-    
-    }
-    
     public double EvaluaExpresion(){
         return evalua(raiz);
     }
-  /*  
-    public static String decimalToBinary(int decimalNumber) {
-    if (decimalNumber == 0) {
-        return "0";
-    }
 
-    StringBuilder binary = new StringBuilder();
-
-    while (decimalNumber > 0) {
-        int remainder = decimalNumber % 2;
-        binary.insert(0, remainder); // Agrega el residuo al principio de la cadena
-        decimalNumber = decimalNumber / 2;
-    }
-
-    return binary.toString();
-}
-*/
     private double evalua(NodoArbol subArbol){
         double acum = 0;
-        if(!esOperador(subArbol.dato.toString().charAt(0))){
-            return Double.parseDouble(subArbol.dato.toString());
-        }else{
-            switch(subArbol.dato.toString().charAt(0)){
-                case 'p' -> acum = acum + Math.pow(evalua(subArbol.izquierdo),evalua(subArbol.derecho));
-                case '*' -> acum = acum + evalua(subArbol.izquierdo)* evalua(subArbol.derecho);
-                case '/' -> acum = acum + evalua(subArbol.izquierdo) / evalua(subArbol.derecho);
-                case '%' -> acum = acum + evalua(subArbol.izquierdo) % evalua(subArbol.derecho);
-                case '+' -> acum = acum + evalua(subArbol.izquierdo) + evalua(subArbol.derecho);
-                case '-' -> acum = acum + evalua(subArbol.izquierdo) - evalua(subArbol.derecho);
-                case '&'-> acum = (int)evalua(subArbol.izquierdo) & (int)evalua(subArbol.derecho);
-                case '|'-> acum = (int)evalua(subArbol.izquierdo) | (int)evalua(subArbol.derecho);
-                case '^'-> acum = (int)evalua(subArbol.izquierdo) ^ (int)evalua(subArbol.derecho);
-                case '~'-> acum = ~(int)evalua(subArbol.izquierdo);
-                
-        
-            }   
-            return acum;
+        if (subArbol == null) {
+            throw new IllegalArgumentException("Subárbol no puede ser nulo");
         }
+        String operador = subArbol.dato.toString();
+        if (!esOperador(operador)) {
+            return Double.parseDouble(operador);
+        } else {
+            switch (operador) {
+                case "**" -> acum = Math.pow(evalua(subArbol.izquierdo), evalua(subArbol.derecho));
+                case "^" -> acum = (int)evalua(subArbol.izquierdo) ^ (int)evalua(subArbol.derecho); // Cambio: ^ ahora es XOR
+                case "*" -> acum = evalua(subArbol.izquierdo) * evalua(subArbol.derecho);
+                case "/" -> acum = evalua(subArbol.izquierdo) / evalua(subArbol.derecho);
+                case "%" -> acum = evalua(subArbol.izquierdo) % evalua(subArbol.derecho);
+                case "+" -> acum = evalua(subArbol.izquierdo) + evalua(subArbol.derecho);
+                case "-" -> acum = evalua(subArbol.izquierdo) - evalua(subArbol.derecho);
+                case "&" -> acum = (int)evalua(subArbol.izquierdo) & (int)evalua(subArbol.derecho); // Nuevo: Evaluación AND
+                case "|" -> acum = (int)evalua(subArbol.izquierdo) | (int)evalua(subArbol.derecho); // Nuevo: Evaluación OR
+                case "~" -> acum = ~(int)evalua(subArbol.izquierdo); // Nuevo: Evaluación NOT
+            }
+        }
+        return acum;
     }
 }
