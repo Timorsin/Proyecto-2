@@ -1,17 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * The NodoArbol class represents a node in a binary tree used for mathematical expressions.
+ * It stores an object as its data, and has left and right child nodes.
  */
 package proyectocalcu;
 
-/**
- *
- * @author maxhp
- */
 public class NodoArbol {
     Object dato;
     NodoArbol izquierdo;
     NodoArbol derecho;
+    
+     /**
+     * Constructs a new NodoArbol with the given data.
+     *
+     * @param x The data to be stored in the node.
+     */
     
     public NodoArbol(Object x){
         dato = x;

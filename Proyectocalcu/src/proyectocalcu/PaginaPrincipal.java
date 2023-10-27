@@ -1,13 +1,12 @@
 
 package proyectocalcu;
 
+import java.awt.EventQueue;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import org.opencv.videoio.VideoCapture;
+import org.opencv.core.Core;
 
 public class PaginaPrincipal extends javax.swing.JFrame {
 
@@ -149,7 +148,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             System.out.println(e);
         }
         try{
-            Socket socket2 = new Socket("127.0.0.1", 6000 );
+            Socket socket2 = new Socket("127.0.0.1", 8000 );
             
             DataInputStream result2 = new DataInputStream(socket2.getInputStream());
             String defres2 = result2.readUTF();
@@ -173,16 +172,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirActionPerformed
 
     private void abrircamaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrircamaraActionPerformed
-        OpenCVcode camera = new OpenCVcode();  // Create an instance of OpenCVcode
-        Thread cameraThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            //VideoCapture capture = new VideoCapture();
-            
-            camera.StartCamera();  // Start the camera in a new thread
-        }
+        
+        EventQueue.invokeLater(()->{
+            OpenCVcode camara = new OpenCVcode();
+            new Thread(()->camara.StartCamera()).start();
         });
-        cameraThread.start();
     }//GEN-LAST:event_abrircamaraActionPerformed
 
     private void RegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroActionPerformed
@@ -193,15 +187,10 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_RegistroActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) throws FileNotFoundException{
         
-        //File csvFile = new File("Registro.csv");
-        //PrintWriter out = new PrintWriter(csvFile);
-        
-        
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PaginaPrincipal().setVisible(true);

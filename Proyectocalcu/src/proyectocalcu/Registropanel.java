@@ -1,14 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package proyectocalcu;
 
 import java.io.IOException;
 import java.net.Socket;
 
-public class Registropanel extends javax.swing.JFrame {
+/**
+ * The Registropanel class represents a user interface panel for displaying registration information.
+ */
 
+public class Registropanel extends javax.swing.JFrame {
+    
+    /**
+     * Default constructor for the Registropanel class.
+     * Initializes the GUI components.
+     */
+    
     public Registropanel() {
         initComponents();
     }
@@ -45,7 +51,13 @@ public class Registropanel extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Entry point for the Registropanel application.
+     *
+     * @param args Command-line arguments
+     */
+    
     public static void main(String args[]) {
        
         try {

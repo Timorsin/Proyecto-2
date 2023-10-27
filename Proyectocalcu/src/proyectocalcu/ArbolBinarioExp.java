@@ -1,21 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package proyectocalcu;
 
 /**
- *
- * @author maxhp
+ * The ArbolBinarioExp class represents a binary expression tree used for evaluating mathematical expressions.
+ * It allows the creation of expression trees from string expressions and their evaluation.
  */
+
 public class ArbolBinarioExp {
     NodoArbol raiz;
+    
+    /**
+     * Default constructor for the ArbolBinarioExp class.
+     * Initializes the root node to null.
+     */
     
     public ArbolBinarioExp(){
     
         raiz = null;
     
     }
+    
+    /**
+     * Constructor for the ArbolBinarioExp class that creates an expression tree from a given string expression.
+     *
+     * @param cadena The string expression to be converted into an expression tree.
+     */
     
     public ArbolBinarioExp(String cadena){
        
@@ -24,11 +33,21 @@ public class ArbolBinarioExp {
     
     }
     
+    /**
+     * Resets the expression tree by setting the root node to null.
+     */
+    
     public void reiniciarArbol(){
     
         raiz = null;
     
     }
+    
+    /**
+     * Creates a new root node with the given data.
+     *
+     * @param dato The data for the new root node.
+     */
     
     public void creaNodo(Object dato){
     
@@ -36,12 +55,26 @@ public class ArbolBinarioExp {
     
     }
     
+    /**
+     * Creates a subtree with the given data and left and right children.
+     *
+     * @param dato2     The data for the new root node.
+     * @param dato1     The left child of the root node.
+     * @param operador  The right child of the root node.
+     * @return The root node of the created subtree.
+     */
+    
     public NodoArbol creaSubArbol(NodoArbol dato2, NodoArbol dato1, NodoArbol operador){
         operador.izquierdo = dato1;
         operador.derecho = dato2;
         return operador;
     }
-
+    
+    /**
+     * Checks if the expression tree is empty.
+     *
+     * @return true if the tree is empty, false otherwise.
+     */
     public boolean arbolVacio(){
         return raiz == null;
     }
@@ -72,7 +105,14 @@ public class ArbolBinarioExp {
         }
         return cadena;
     }
-
+    
+    /**
+     * Returns a string representation of the expression tree in pre-order, in-order, or post-order format.
+     *
+     * @param a The order in which to traverse the tree (0 for pre-order, 1 for in-order, 2 for post-order).
+     * @return The string representation of the expression tree in the specified order.
+     */
+    
     public String toString(int a){
         String cadena = "";
         switch(a){
@@ -83,6 +123,13 @@ public class ArbolBinarioExp {
         }
         return cadena;
     }
+    
+    /**
+     * Determines the priority of an operator character.
+     *
+     * @param c The operator character.
+     * @return The operator's priority level (higher values indicate higher priority).
+     */
     
     private int prioridad(char c){
         int p = 100;
@@ -95,6 +142,13 @@ public class ArbolBinarioExp {
         return p;
     }
     
+    /**
+     * Checks if a character is an operator.
+     *
+     * @param c The character to check.
+     * @return true if the character is an operator, false otherwise.
+     */
+    
     private boolean esOperador(char c){
         boolean resultado;
         resultado = switch(c){
@@ -104,6 +158,13 @@ public class ArbolBinarioExp {
         return resultado;
     }
     
+    /**
+     * Determines the priority of an operator string.
+     *
+     * @param op The operator string.
+     * @return The operator's priority level (higher values indicate higher priority).
+     */
+    
     private int prioridad(String op) {
         return switch(op) {
             case "**" -> 50;  // Potencia tiene la prioridad más alta
@@ -111,12 +172,26 @@ public class ArbolBinarioExp {
         };
     }
     
+    /**
+     * Checks if a string represents an operator.
+     *
+     * @param op The string to check.
+     * @return true if the string is an operator, false otherwise.
+     */
+    
     private boolean esOperador(String op) {
         return switch(op) {
             case "**" -> true;
             default -> esOperador(op.charAt(0));
         };
     }
+    
+    /**
+     * Creates an expression tree from a given string expression.
+     *
+     * @param cadena The string expression to be converted into an expression tree.
+     * @return The root node of the created expression tree.
+     */
     
     private NodoArbol creaArbolBE(String cadena) {
         PilaArbolExp PilaOperadores = new PilaArbolExp();
@@ -180,11 +255,22 @@ public class ArbolBinarioExp {
         NodoArbol resultado = PilaExpresiones.quitar();
         return resultado;
     }
-
+    /**
+     * Evaluates the expression tree and returns the result as a double.
+     *
+     * @return The result of the expression evaluation.
+     */
     public double EvaluaExpresion(){
         return evalua(raiz);
     }
-
+    
+    /**
+     * Recursively evaluates the expression tree starting from the given root node.
+     *
+     * @param subArbol The root node of the subtree to evaluate.
+     * @return The result of the subtree evaluation.
+     */
+    
     private double evalua(NodoArbol subArbol){
         double acum = 0;
         if (subArbol == null) {

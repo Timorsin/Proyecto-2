@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+/**
+ * The Principal class serves as the entry point to the application.
+ * It creates and displays the main application window (PaginaPrincipal).
  */
+
 package proyectocalcu;
 
-/**
- *
- * @author maxhp
- */
 public class Principal {
-
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
         new PaginaPrincipal().setVisible(true);
     }

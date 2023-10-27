@@ -1,12 +1,14 @@
-
+/**
+ * This class represents a server application for processing mathematical expressions and OCR image recognition.
+ */
 package proyectocalcu;
 
-import java.io.ByteArrayOutputStream;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,11 +17,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 public class Servidor extends javax.swing.JFrame implements Runnable {
-    
+    /**
+     * Default constructor for the Servidor class.
+     */
     public Servidor() {
         initComponents();
         Thread hilo = new Thread(this);
@@ -32,6 +38,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         area = new javax.swing.JTextArea();
+        labelimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,20 +46,31 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         area.setRows(5);
         jScrollPane1.setViewportView(area);
 
+        labelimg.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelimg, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+            .addComponent(labelimg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Entry point for the Servidor application.
+     *
+     * @param args Command-line arguments
+     * @throws FileNotFoundException if a file is not found
+     */
     public static void main(String args[]) throws FileNotFoundException{
         
         try {
@@ -72,6 +90,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
             java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        // Set the look and feel for the GUI application.
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -79,28 +98,31 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 new Servidor().setVisible(true);
             }
         });
-        
+        // Create a CSV file for recording operations.
         File csvFile = new File("Registro.csv");
         PrintWriter out = new PrintWriter(csvFile);
         
         
     }
+    // Variables declaration for GUI components.
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea area;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelimg;
     // End of variables declaration//GEN-END:variables
-    
     
     
     @Override
     public void run(){
        
         try {
+            // Initialize a server socket for processing mathematical expressions.
             ServerSocket servidor = new ServerSocket(5000);
             System.out.println("Iniciado");
           
             while(true){
+                // Accept incoming socket connections.
                 Socket misocket = servidor.accept();
                 
                 DataInputStream recibido = new DataInputStream(misocket.getInputStream());
@@ -128,44 +150,43 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         
         Tesseract tesseract = new Tesseract();
         
-        try{
-            ServerSocket servidorIm = new ServerSocket(6000);
-            System.out.println("Iniciado");
+        try {
+            // Initialize a server socket for image processing.
+            ServerSocket serverIm = new ServerSocket(8000);
             
             while(true){
-                Socket tusocket = servidorIm.accept();
-                InputStream imgEc = tusocket.getInputStream();
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                // Accept incoming socket connections for image processing.
+                Socket tusocket = serverIm.accept();
+                InputStream imageDataStream = tusocket.getInputStream();
                 
-                int nRead;
-                byte[] data = new byte[1024];
-                while((nRead = imgEc.read(data,0,data.length)) != -1){
-                    buffer.write(data,0,nRead);
-                    
-                }
-                buffer.flush();
-                byte[] imageData = buffer.toByteArray();
+                int bytesAvailable = imageDataStream.available();
+
+                byte[] imageData = new byte[bytesAvailable];
+
+                imageDataStream.read(imageData);
+
                 
-                FileOutputStream outputStream = new FileOutputStream("imagenServer/" + "EcuacionRecibida.jpg");
-                outputStream.write(imageData);
-      
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageData));
+
                 
-                tesseract.setDatapath("C:\\Users\\maxhp\\Downloads\\Tess4J-3.4.8-src\\Tess4J");
+                ImageIcon icon = new ImageIcon(image);
+                labelimg.setIcon(icon);
+
+                
+                ImageIO.write(image, ".jpg", new File("imagenServer/" + "EcuacionRecibida.jpg"));
+
+               
+                //tesseract.setDatapath("Proyectocalcu\Tessdata");
                 String text = tesseract.doOCR(new File("EcuacionRecibida.jpg"));
-                
-                System.out.println(text);
+
                 
                 ArbolBinarioExp ABE = new ArbolBinarioExp(text);
-                
                 DataOutputStream respaquete2 = new DataOutputStream(tusocket.getOutputStream());
                 respaquete2.writeUTF("" + ABE.EvaluaExpresion());
-
             }
-        }catch(TesseractException e){
-            System.out.println(e.toString());
-        }catch(IOException e){
+            } catch (IOException | TesseractException e) {
             e.printStackTrace();
-        }
+            }
 
     }
 }

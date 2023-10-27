@@ -1,21 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package proyectocalcu;
 
 /**
- *
- * @author maxhp
+ * The PilaArbolExp class represents a stack used for managing binary expression tree nodes.
+ * It provides methods for inserting, checking if the stack is empty, getting the top element,
+ * resetting the stack, and removing elements from the stack.
  */
 public class PilaArbolExp {
+    
     private NodoPila tope;
+    
+    /**
+     * Default constructor for the PilaArbolExp class.
+     * Initializes the top of the stack to null.
+     */
     
     public PilaArbolExp(){
     
         tope = null;
     
     }
+    
+    /**
+     * Inserts a new binary expression tree node into the stack.
+     *
+     * @param elemento The binary expression tree node to be inserted.
+     */
     
     public void insertar(NodoArbol elemento){
     
@@ -26,11 +36,23 @@ public class PilaArbolExp {
     
     }
     
+    /**
+     * Checks if the stack is empty.
+     *
+     * @return true if the stack is empty, false otherwise.
+     */
+    
     public boolean pilaVacia(){
     
         return tope == null;
     
     }
+    
+    /**
+     * Returns the top element of the stack, which is a binary expression tree node.
+     *
+     * @return The top binary expression tree node on the stack.
+     */
     
     public NodoArbol topePila(){
     
@@ -38,11 +60,21 @@ public class PilaArbolExp {
     
     }
     
+     /**
+     * Resets the stack by setting the top element to null.
+     */
+    
     public void ReiniciarPila(){
     
         tope = null;
     
     }
+    
+    /**
+     * Removes and returns the top element of the stack, which is a binary expression tree node.
+     *
+     * @return The top binary expression tree node removed from the stack.
+     */
     
     public NodoArbol quitar(){
     
